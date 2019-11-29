@@ -27,3 +27,4 @@ class StockViewset(mixins.ListModelMixin,viewsets.GenericViewSet):
     queryset = Stock.objects.all()
     serializer_class = StocksSerializer
     pagination_class = StockPagination
+    
