@@ -2,6 +2,8 @@ from django.db import models
 from datetime import datetime
 
 # Create your models here.
+class Stockaddress(models.Model):
+    address = models.CharField(max_length=30)
 
 class Stock(models.Model):
     code = models.CharField(max_length=10)
@@ -25,3 +27,10 @@ class Stock(models.Model):
     detail = models.CharField(max_length=30)
     out_date = models.DateTimeField()
     address = models.CharField(max_length=30)
+
+class Stockrecrod(models.Model):
+    stocks = models.ForeignKey(Stock, on_delete=models.CASCADE, verbose_name="库存", related_name="records")
+    ways = models.CharField(max_length=1)
+    oldaddress = models.ForeignKey(Stockaddress, on_delete=models.CASCADE, verbose_name="库存地", related_name="old")
+    newaddress = models.ForeignKey(Stockaddress, on_delete=models.CASCADE, verbose_name="库存地", related_name="new")
+    add_time = models.DateTimeField("记录时间", default=datetime.now)
