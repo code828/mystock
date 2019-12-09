@@ -27,6 +27,7 @@ class Stock(models.Model):
     detail = models.CharField(max_length=30)
     out_date = models.DateTimeField()
     address = models.CharField(max_length=30)
+    tag = models.CharField(max_length=18,default='')
 
 class Stockrecrod(models.Model):
     stocks = models.ForeignKey(Stock, on_delete=models.CASCADE, verbose_name="库存", related_name="records")
