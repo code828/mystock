@@ -1,7 +1,7 @@
 
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import mixins,viewsets,filters
-from .models import Stock, Stockaddress
+from .models import Stock, Stockaddress,Stockrecrod
 from .serializers import StocksSerializer, StocksaddressSerializer
 from rest_framework.pagination import PageNumberPagination
 
@@ -21,7 +21,7 @@ class StockPagination(PageNumberPagination):
     max_page_size = 100
 
 
-class StockViewset(mixins.ListModelMixin,viewsets.GenericViewSet):
+class StockViewset(mixins.ListModelMixin,mixins.RetrieveModelMixin,mixins.UpdateModelMixin,viewsets.GenericViewSet):
     """
     库存列表
     """
@@ -32,6 +32,20 @@ class StockViewset(mixins.ListModelMixin,viewsets.GenericViewSet):
 
     filter_fields = ('detail',)
     search_fields = ("name",)
+
+    def perform_update(self, serializer):
+        record = serializer.save()
+        record_stock = Stockrecrod()
+        #更新stock:
+        #stock = Stock()
+        #stock.address = record.address
+        #stock.save()
+        # 获取修改之前的地址
+        existed_record = Stock.objects.get(id=serializer.instance.id)
+        record_stock.oldaddress = existed_record.address
+        record_stock.newaddress = record.address
+        record_stock.add_time = record.add_time
+        record_stock.save()
 
 class StockaddressViewset(mixins.ListModelMixin,viewsets.GenericViewSet):
 
