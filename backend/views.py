@@ -42,8 +42,8 @@ class StockViewset(mixins.ListModelMixin,mixins.RetrieveModelMixin,mixins.Update
         #stock.save()
         # 获取修改之前的地址
         existed_record = Stock.objects.get(id=serializer.instance.id)
-        record_stock.oldaddress = existed_record.address
-        record_stock.newaddress = record.address
+        record_stock.oldaddress = existed_record.detail
+        record_stock.newaddress = record.detail
         record_stock.add_time = record.add_time
         record_stock.save()
 
